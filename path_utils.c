@@ -6,33 +6,34 @@
 /*   By: eperperi <eperperi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 14:54:05 by eperperi          #+#    #+#             */
-/*   Updated: 2024/04/29 18:00:28 by eperperi         ###   ########.fr       */
+/*   Updated: 2024/05/02 15:42:15 by eperperi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	*path_finder(char **env, char *command)
+char	*path_finder(char **env, char *command, char **command_args)
 {
 	int		i;
 	char	**paths;
 	char	*join_path;
 
+	check_path(env);
 	i = 0;
 	while (ft_strncmp(env[i], "PATH=", 5) != 0 && env[i] != 0)
 		i++;
 	paths = ft_split(env[i] + 5, ':');
-	if (paths == NULL)
-		exit(EXIT_FAILURE);
 	i = 0;
 	while (paths[i] != NULL)
 	{
 		join_path = join_paths(paths[i], '/', command);
 		if (access(join_path, F_OK | X_OK) == 0)
-			return (join_path);
+			return (free_array(paths), join_path);
 		free(join_path);
 		i++;
 	}
+	free_array(paths);
+	free_array(command_args);
 	exit(EXIT_FAILURE);
 }
 

@@ -6,7 +6,7 @@
 /*   By: eperperi <eperperi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 14:05:23 by eperperi          #+#    #+#             */
-/*   Updated: 2024/04/29 16:06:37 by eperperi         ###   ########.fr       */
+/*   Updated: 2024/05/02 15:04:27 by eperperi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 void	child1(char **argv, int *pfd, char **env);
 void	child2(char **argv, int *pfd, char **env);
 char	**ft_split(char const *s, char c);
-char	*path_finder(char **env, char *command);
+char	*path_finder(char **env, char *command, char **command_args);
 void	free_array(char **command_args);
 char	**split_command(char *arg);
 char	*str_split(const char *s, int c, int *i);

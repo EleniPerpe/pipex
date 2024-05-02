@@ -1,6 +1,6 @@
 CC = cc
 
-CFLAGS = -Werror -Wall -Wextra #-g -fsanitize=address
+CFLAGS = -Werror -Wall -Wextra -g #-fsanitize=address
 
 # FSANITIZER = -g -fsanitize=address
 
