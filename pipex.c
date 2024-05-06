@@ -6,7 +6,7 @@
 /*   By: eperperi <eperperi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 14:04:42 by eperperi          #+#    #+#             */
-/*   Updated: 2024/05/02 15:58:45 by eperperi         ###   ########.fr       */
+/*   Updated: 2024/05/06 13:55:04 by eperperi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	main(int argc, char **argv, char **env)
 	close(pfd[1]);
 	waitpid(pid, &status, 0);
 	status = handle_exit(status);
-	return (EXIT_SUCCESS);
+	return (status);
 }
 
 void	child1(char **argv, int *pfd, char **env)
@@ -52,8 +52,7 @@ void	child1(char **argv, int *pfd, char **env)
 	fd_in = open(argv[1], O_RDONLY);
 	if (fd_in == -1)
 	{
-		free(command_path);
-		free_array(command_args);
+		free_arrays(command_args, command_path);
 		handle_error(argv[1], EXIT_FAILURE);
 	}
 	close(pfd[0]);
@@ -62,7 +61,7 @@ void	child1(char **argv, int *pfd, char **env)
 	close(fd_in);
 	if (execve(command_path, command_args, env) == -1)
 	{
-		free_array(command_args);
+		free_arrays(command_args, command_path);
 		free(command_path);
 		close(pfd[1]);
 		handle_error("execve", EXIT_FAILURE);
@@ -87,25 +86,9 @@ void	child2(char **argv, int *pfd, char **env)
 		handle_error("dup2", EXIT_FAILURE);
 	if (execve(command_path, command_args, env) == -1)
 	{
-		free_array(command_args);
-		free(command_path);
+		free_arrays(command_args, command_path);
 		close(pfd[0]);
 		close(fd_out);
 		handle_error("execve", EXIT_FAILURE);
 	}
-}
-
-void	handle_error(char *str, int exit_code)
-{
-	perror(str);
-	exit(exit_code);
-}
-
-int	handle_exit(int status)
-{
-	if (WIFEXITED(status))
-		status = WEXITSTATUS(status);
-	else
-		status = EXIT_FAILURE;
-	return (status);
 }

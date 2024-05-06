@@ -6,7 +6,7 @@
 /*   By: eperperi <eperperi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 14:54:05 by eperperi          #+#    #+#             */
-/*   Updated: 2024/05/02 15:42:15 by eperperi         ###   ########.fr       */
+/*   Updated: 2024/05/02 17:19:45 by eperperi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ char	*path_finder(char **env, char *command, char **command_args)
 	}
 	free_array(paths);
 	free_array(command_args);
-	exit(EXIT_FAILURE);
+	handle_error("command not found", 127);
+	return (NULL);
 }
 
 char	*join_paths(char *path, char slash, char *command)

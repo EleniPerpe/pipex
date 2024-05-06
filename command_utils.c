@@ -6,7 +6,7 @@
 /*   By: eperperi <eperperi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 16:07:02 by eperperi          #+#    #+#             */
-/*   Updated: 2024/05/02 14:09:47 by eperperi         ###   ########.fr       */
+/*   Updated: 2024/05/06 13:49:55 by eperperi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,22 @@
 char	**check_to_split_commands(char *argv)
 {
 	char	**temp;
+	int		i;
+	char	*take_command;
 
 	if (argv[0] == 'a' && argv[1] == 'w' && argv[2] == 'k')
 		temp = split_command(argv);
 	else
 		temp = ft_split(argv, ' ');
+	i = 0;
+	while (temp[i] != NULL)
+		i++;
+	if (i < 2)
+	{
+		take_command = ft_strrchr(temp[0], '/');
+		if (take_command != NULL)
+			temp[0] = take_command + 1;
+	}
 	return (temp);
 }
 
@@ -46,6 +57,7 @@ char	**split_command(char *arg)
 		res[1] = ft_substr(arg, i + 1, ft_strlen(arg) - i);
 		if (res[1] == NULL)
 			return (NULL);
+		res[1] = check_quotes(res[1]);
 		res[2] = NULL;
 	}
 	return (res);
@@ -82,17 +94,19 @@ char	*str_split(const char *s, int c, int *i)
 	return (NULL);
 }
 
-void	free_array(char **command_args)
+char	*check_quotes(char *arg)
 {
-	int	i;
+	char	*temp;
+	int		len;
 
-	i = 0;
-	while (command_args[i] != NULL)
-		i++;
-	while (i >= 0)
+	temp = NULL;
+	len = ft_strlen(arg);
+	if ((arg[0] == '\'' && arg[len] == '\'')
+		|| (arg[0] == '"' && arg[len] == '"'))
 	{
-		free(command_args[i]);
-		i--;
+		temp = ft_substr(arg, 1, len - 1);
+		free(arg);
+		return (temp);
 	}
-	free(command_args);
+	return (arg);
 }

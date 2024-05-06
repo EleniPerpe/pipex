@@ -6,7 +6,7 @@ CFLAGS = -Werror -Wall -Wextra -g #-fsanitize=address
 
 NAME = pipex
 
-SRCS = pipex.c command_utils.c path_utils.c
+SRCS = pipex.c command_utils.c path_utils.c errors.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -18,9 +18,6 @@ all: $(NAME)
 $(NAME) : $(OBJS)
 	make -C $(LIBRARY_DIR)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L $(LIBRARY_DIR) -lft
-
-debug: $(CFLAGS) += $(FSANITIZER)
-debug: $(NAME)
 
 clean:
 	rm -f $(OBJS)
